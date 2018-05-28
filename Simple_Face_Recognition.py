@@ -2,23 +2,28 @@ import tensorflow as tf
 import numpy as np
 import scipy.io as sio
 
+#打开数据集
 f = open('Yale_64x64.mat', 'rb')
+#加载
 mdict = sio.loadmat(f)
 
-#fea gnd
+#fea gnd 获取训练数据和标签
 train_data = mdict['fea']
 train_label = mdict['gnd']
 
+#把data和label重新随机排列
 train_data = np.random.permutation(train_data)
 train_label = np.random.permutation(train_label)
 test_data = train_data[0:64]
 test_label = train_label[0:64]
+# seed( ) 用于指定随机数生成时所用算法开始的整数值，如果使用相同的seed( )值，则每次生成的随即数都相同
 np.random.seed(100)
 test_data = np.random.permutation(test_data)
 np.random.seed(100)
 test_label = np.random.permutation(test_label)
 
 #train
+#reshape的参数是什么意思?
 train_data = train_data.reshape(train_data.shape[0],64,64,1).astype(np.float32)/255
 train_labels_new = np.zeros((165,15))
 for i in range(0,165):
